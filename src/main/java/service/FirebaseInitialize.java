@@ -23,20 +23,16 @@ public class FirebaseInitialize {
 	
 	 public void getUserById(String uid) throws InterruptedException, ExecutionException{
 		    // [START get_user_by_id]
-		    UserRecord userRecord = FirebaseAuth.getInstance().getUserAsync(uid).get();
+			UserRecord userRecord = FirebaseAuth.getInstance().getUserAsync(uid).get();
 		    // See the UserRecord reference doc for the contents of userRecord.
 		   
 		    System.out.println("Successfully fetched user data: " + userRecord.getUid());
-		    System.out.println("Successfully fetched user data: " + userRecord.getEmail());
-		   
+			System.out.println("Successfully fetched user data: " + userRecord.getEmail());
+					   
 
 		    // [END get_user_by_id]
 		  }
 	 
-	 public void getData() {
-		 System.out.println("hello");
-		 
-	 }
 	
 	@PostConstruct
 	public void initialize() {
@@ -57,5 +53,6 @@ public class FirebaseInitialize {
 		
 				
 	}
+
 	
 }
