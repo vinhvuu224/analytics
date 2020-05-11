@@ -30,7 +30,7 @@ public class HighLevelData {
     return totalRegisteredUsers;
 }
 
-public int getTotalPageViews(){
+    public int getTotalPageViews(){
     return totalPageViews;
 }
 

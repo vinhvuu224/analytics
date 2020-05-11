@@ -3,6 +3,7 @@ package service;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.http.HttpHeaders;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -10,9 +11,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
@@ -85,5 +85,32 @@ public class controllers {
         }
 
         return communities;
+    }
+
+    @CrossOrigin
+    @GetMapping("/getNotes")
+    public ArrayList<JsonNode> getNotes() throws MalformedURLException, IOException {
+        JsonNode jsonNode = new ObjectMapper().readTree(new URL("https://community-housing-c73c2.firebaseio.com/notes.json"));
+        Iterator<String> fieldNames = jsonNode.fieldNames();
+        int id = 0;
+
+        ArrayList<JsonNode> notes = new ArrayList<JsonNode>();
+
+        while(fieldNames.hasNext()){
+            id += 1;
+            String fieldName = fieldNames.next();
+            JsonNode field = jsonNode.get(fieldName);
+            Note note = new Note(id, field.get("noteBy").asText(), field.get("subject").asText(), field.get("note").asText());
+            JsonNode node = new ObjectMapper().valueToTree(note);
+            notes.add(node);
+        }
+
+        return notes;
+    }
+
+    @CrossOrigin
+    @PostMapping(value = "/addNote")
+    public void createNote(@RequestBody Note note){
+        Note result = restTemplate.postForObject("https://community-housing-c73c2.firebaseio.com/notes.json",note, Note.class);
     }
 }
