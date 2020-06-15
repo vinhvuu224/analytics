@@ -29,3 +29,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### housing datbase
+serviceAccount.json
+
